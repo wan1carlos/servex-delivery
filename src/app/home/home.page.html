@@ -1,0 +1,57 @@
+<ion-header class="ion-no-border">
+<ion-toolbar color="light">
+<ion-buttons slot="start" >
+<ion-menu-button color="primary"></ion-menu-button>
+</ion-buttons>
+<ion-title *ngIf="userData && text">{{ text.d_home_title }}</ion-title>
+
+<ion-buttons slot="end" style="border:1px solid white;border-radius: 10px;padding: 3px 5px" *ngIf="text">
+<ion-label *ngIf="online">{{ text.d_active }}&nbsp;&nbsp;</ion-label>
+<ion-label *ngIf="!online">{{ text.d_offline }}&nbsp;&nbsp;</ion-label>
+<ion-toggle [(ngModel)]="online" color="success" (ionChange)="setStatus(1)"></ion-toggle>
+</ion-buttons>
+
+</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data && text">
+
+<div style="height: 80px;background-color:#f4f5f8">
+&nbsp;
+</div>
+
+<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+<div style="height: auto;margin-top: -20%;border-radius: 30px;background-color: white">
+
+
+<p style="padding: 20px 20px;padding-top: 10%;font-weight: bold" align="center" *ngIf="data.length == 0">{{ text.d_no_order }}</p>
+
+
+<ion-row *ngFor="let order of data" style="padding: 10px 10px;border-bottom: 10px solid #f4f5f8;font-size: 12px">
+<ion-col size="12" style="font-size: 20px;font-weight: bold">{{ order.store }} 
+
+</ion-col>
+<ion-col size="12">&nbsp;</ion-col>
+
+<ion-col size="4"><b>{{ text.d_order_id }}</b></ion-col>
+<ion-col size="8">{{ order.id }}</ion-col>
+
+<ion-col size="4"><b>{{ text.d_user }}</b></ion-col>
+<ion-col size="8">{{ order.user.name }}</ion-col>
+
+<ion-col size="4"><b>{{ text.d_phone }}</b></ion-col>
+<ion-col size="8"><a href="tel:{{ order.user.phone }}">{{ order.user.phone }}</a></ion-col>
+
+<ion-col size="4"><b>{{ text.d_address }}</b></ion-col>
+<ion-col size="8">{{ order.user.address }}</ion-col>
+<ion-col size="12">&nbsp;</ion-col>
+<ion-col size="12" *ngIf="order.st > 1"><ion-button expand="block" mode="ios" (click)="detail(order)">{{ text.d_view_detail }}</ion-button></ion-col>
+<ion-col size="12" *ngIf="order.st == 1"><ion-button expand="block" mode="ios" (click)="accept(order)" color="success">{{ text.d_accept }}</ion-button></ion-col>
+
+</ion-row>
+
+</div>
+</ion-content>

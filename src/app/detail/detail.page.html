@@ -1,0 +1,105 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+<ion-back-button></ion-back-button>
+</ion-buttons>
+    <ion-title *ngIf="text && data">
+     {{ text.d_view_detail }} <span style="float: right">#{{ data.id }}</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="data && text">
+
+<div style="height: 80px;background-color:#f4f5f8">
+&nbsp;
+</div>
+
+<div style="height: auto;margin-top: -20%;border-radius: 30px;background-color: white">
+
+<ion-row style="padding: 10px 10px;border-bottom: 10px solid #f4f5f8;font-size: 12px">
+<ion-col size="12" style="font-size: 20px;font-weight: bold">{{ data.store }}</ion-col> 
+<ion-col size="12" style="font-size: 12px;">{{ data.date }}
+
+<a href="http://maps.google.com/?q={{ data.slat }},{{ data.slng }}" target="_blank" style="float: right">{{ text.d_show_dir }}</a>
+
+
+</ion-col> 
+</ion-row>
+
+<ion-list style="margin-top: -5%" lines="none">
+
+<ion-list-header>
+<ion-note>{{ text.d_order_item }}</ion-note>
+</ion-list-header>
+
+<ion-item text-wrap style="font-size: 12px" *ngFor="let item of data.items">
+  <ion-label>{{ item.qty }} {{ item.type }} {{ item.item }}
+
+  <p *ngFor="let addon of item.addon" style="font-size: 12px;margin-left: 10px">{{ addon.addon }}</p>
+
+  </ion-label>
+  <ion-icon name="restaurant" slot="start" color="primary"></ion-icon>
+</ion-item>
+
+</ion-list>
+
+<div class="info">
+
+<ion-row>
+<ion-col size="12"><ion-note>{{ text.d_other_info }}</ion-note><br></ion-col>
+<ion-col size="6"><b>{{ text.d_user }}</b></ion-col>
+<ion-col size="6">{{ data.user.name }}</ion-col>
+</ion-row>
+
+<ion-row>
+<ion-col size="6"><b>{{ text.d_phone }}</b></ion-col>
+<ion-col size="6"><a href="tel:{{ data.user.phone }}">{{ data.user.phone }}</a></ion-col>
+</ion-row>
+
+<ion-row>
+<ion-col size="6"><b>{{ text.d_address }}</b></ion-col>
+<ion-col size="6">{{ data.user.address }}<br>
+
+<a href="http://maps.google.com/?q={{ data.user.lat }},{{ data.user.lng }}" target="_blank">{{ text.d_view_detail }}</a>
+
+</ion-col>
+</ion-row>
+
+<ion-row>
+<ion-col size="6"><b>{{ text.d_total_amount }}</b></ion-col>
+<ion-col size="6">{{ data.currency }}{{ data.total }}</ion-col>
+</ion-row>
+
+<ion-row>
+<ion-col size="6"><b>{{ text.d_payment_method }}</b></ion-col>
+<ion-col size="6" *ngIf="data.pay == 1">{{ text.d_cod }}</ion-col>
+<ion-col size="6" *ngIf="data.pay == 2 || data.pay == 3">{{ text.d_online }}</ion-col>
+<ion-col size="6" *ngIf="data.pay == 4">
+
+<span *ngIf="data.payable > 0">{{ data.total - data.payable }} {{ text.d_ecash_paid }}</span>
+<span *ngIf="data.payable == 0">{{ text.d_paid_ecash }}</span>
+
+</ion-col>
+</ion-row>
+
+<ion-row>
+<ion-col size="6"><b>{{ text.d_total_pay }}</b></ion-col>
+<ion-col size="6">{{ data.currency }}{{ data.payable }}</ion-col>
+</ion-row>
+
+<ion-row *ngIf="status == 3">
+
+<ion-col size="12"><ion-button size="block" mode="ios" (click)="presentAlertConfirm(data.id,4)">{{ text.d_start_ride }}</ion-button></ion-col>
+
+</ion-row>
+
+<ion-row *ngIf="status == 4">
+
+<ion-col size="12"><ion-button size="block" mode="ios" (click)="presentAlertConfirm(data.id,5)" color="success">{{ text.d_complete_ride }}</ion-button></ion-col>
+
+</ion-row>
+
+</div>
+
+</div>
+</ion-content>
